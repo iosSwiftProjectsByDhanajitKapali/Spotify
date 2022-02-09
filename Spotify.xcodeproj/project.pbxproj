@@ -29,6 +29,8 @@
 		019E760427B2AE8200058722 /* Playlist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019E760327B2AE8200058722 /* Playlist.swift */; };
 		019E760627B2AEA200058722 /* Artist.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019E760527B2AEA200058722 /* Artist.swift */; };
 		019E760827B2AEB600058722 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019E760727B2AEB600058722 /* UserProfile.swift */; };
+		01A1B87B27B40599009241BE /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A1B87A27B40599009241BE /* Extensions.swift */; };
+		01A1B87D27B40CF5009241BE /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A1B87C27B40CF4009241BE /* Constants.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +58,8 @@
 		019E760327B2AE8200058722 /* Playlist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Playlist.swift; sourceTree = "<group>"; };
 		019E760527B2AEA200058722 /* Artist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Artist.swift; sourceTree = "<group>"; };
 		019E760727B2AEB600058722 /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
+		01A1B87A27B40599009241BE /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		01A1B87C27B40CF4009241BE /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,6 +110,8 @@
 			children = (
 				019E75CA27B2A8B000058722 /* AppDelegate.swift */,
 				019E75CC27B2A8B000058722 /* SceneDelegate.swift */,
+				01A1B87A27B40599009241BE /* Extensions.swift */,
+				01A1B87C27B40CF4009241BE /* Constants.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -250,6 +256,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				019E75F127B2AD4A00058722 /* WelcomeViewController.swift in Sources */,
+				01A1B87D27B40CF5009241BE /* Constants.swift in Sources */,
 				019E75FC27B2ADF300058722 /* AuthManager.swift in Sources */,
 				019E75F927B2ADBA00058722 /* SearchResultsViewController.swift in Sources */,
 				019E75E627B2ACF800058722 /* SearchViewController.swift in Sources */,
@@ -262,6 +269,7 @@
 				019E75F527B2AD7900058722 /* ProfileViewController.swift in Sources */,
 				019E760427B2AE8200058722 /* Playlist.swift in Sources */,
 				019E760827B2AEB600058722 /* UserProfile.swift in Sources */,
+				01A1B87B27B40599009241BE /* Extensions.swift in Sources */,
 				019E75CB27B2A8B000058722 /* AppDelegate.swift in Sources */,
 				019E760627B2AEA200058722 /* Artist.swift in Sources */,
 				019E75F727B2AD9D00058722 /* PlaylistViewController.swift in Sources */,

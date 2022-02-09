@@ -12,6 +12,15 @@ final class AuthManager{
     
     private init(){}
     
+    public var signInUrl : URL? {
+        let scopes = "user-read-private"
+        let redirectUri = "https://www.youtube.com"
+        let base = "https://accounts.spotify.com/authorize"
+        let urlString = "\(base)?response_type=code&client_id=\(Constants.clientID)&scope=\(scopes)&redirect_uri=\(redirectUri)"
+        
+        return URL(string: urlString)
+    }
+    
     var isSignedIn : Bool{
         return false
     }
