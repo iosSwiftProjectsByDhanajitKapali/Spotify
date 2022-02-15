@@ -14,9 +14,9 @@ final class AuthManager{
     
     public var signInUrl : URL? {
         let scopes = "user-read-private"
-        let redirectUri = "https://www.youtube.com"
+        let redirectUri = "https://linktr.ee/dhanajitkapali"
         let base = "https://accounts.spotify.com/authorize"
-        let urlString = "\(base)?response_type=code&client_id=\(Constants.clientID)&scope=\(scopes)&redirect_uri=\(redirectUri)"
+        let urlString = "\(base)?response_type=code&client_id=\(Constants.clientID)&scope=\(scopes)&redirect_uri=\(redirectUri)&show_dialog=TRUE"
         
         return URL(string: urlString)
     }

@@ -48,6 +48,6 @@ class WelcomeViewController: UIViewController {
 
 private extension WelcomeViewController{
     func handleSignIn(success : Bool){
-        
+        //Login user or tell them for error
     }
 }

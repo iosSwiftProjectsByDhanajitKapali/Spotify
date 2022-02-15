@@ -29,15 +29,26 @@ class AuthViewController: UIViewController {
         view.backgroundColor = .systemBackground
         webView.navigationDelegate = self
         view.addSubview(webView)
+        
+        //try to open the signin page using WebView
+        guard let url = AuthManager.shared.signInUrl else {return}
+        webView.load(URLRequest(url: url))
     }
     
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        view.frame = view.bounds
+        webView.frame = view.bounds
     }
     
 }
 
 extension AuthViewController : WKNavigationDelegate{
-    
+    func webView(_ webView: WKWebView, didStartProvisionalNavigation navigation: WKNavigation!) {
+        guard let url = webView.url else {return}
+        
+        //Exchange the code from the URL after signin for a token
+        guard let code = URLComponents(string: url.absoluteString)?.queryItems?.first(where: {$0.name == "code"})?.value else {return}
+                
+        print("Code: \(code)")
+    }
 }
