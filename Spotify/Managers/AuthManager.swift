@@ -37,7 +37,7 @@ final class AuthManager{
         return UserDefaults.standard.object(forKey: "expirationDate") as? Date
     }
     
-    private var shouldRefreshToken : Bool?{
+    private var shouldRefreshToken : Bool{
         guard let tokenExpirationDate = tokenExpirationDate else {
             return false
         }
@@ -96,13 +96,65 @@ final class AuthManager{
     }
     
     
-    public func refreshAccessToken(){
+    public func refreshAccessTokenIfNeeded(completion : @escaping((Bool) -> Void)){
+//        guard shouldRefreshToken else{
+//            completion(true)
+//            return
+//        }
         
+        guard let refreshToken = refreshToken else {
+            return
+        }
+        
+        //refresh the token
+        guard let url = URL(string: Constants.URLs.tokenApiUrl) else {return}
+
+        //create the URL query components
+        var components = URLComponents()
+        components.queryItems = [
+            URLQueryItem(name: "grant_type", value: "refresh_token"),
+            URLQueryItem(name: "refresh_token", value: refreshToken)
+        ]
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "POST"
+        request.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+        request.httpBody = components.query?.data(using: .utf8)
+        
+        let basicToken = Constants.clientID + ":" + Constants.clientSecret
+        let data = basicToken.data(using: .utf8)
+        guard let base64Token = data?.base64EncodedString() else{
+            print("Failed to encode to base64 Token")
+            completion(false)
+            return
+        }
+        request.setValue("Basic \(base64Token)", forHTTPHeaderField: "Authorization")
+
+        let task = URLSession.shared.dataTask(with: request) { [weak self] data, response, error in
+            guard let data = data , error == nil else {
+                completion(false)
+                return
+            }
+            
+            do {
+                let result = try JSONDecoder().decode(AuthResponse.self, from : data)
+                self?.cacheToken(result : result)
+                completion(true)
+            } catch  {
+                print(error.localizedDescription)
+                completion(false)
+            }
+
+        }
+        task.resume()
+
     }
     
     private func cacheToken(result : AuthResponse){
         UserDefaults.standard.set(result.access_token, forKey: "access_token")
-        UserDefaults.standard.set(result.refresh_token, forKey: "refresh_token")
+        if let refreshToken = result.refresh_token{
+            UserDefaults.standard.set(refreshToken, forKey: "refresh_token")
+        }
         UserDefaults.standard.set(Date().addingTimeInterval(TimeInterval(result.expires_in)), forKey: "expirationDate")
     }
 }
