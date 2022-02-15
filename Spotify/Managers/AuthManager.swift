@@ -13,7 +13,7 @@ final class AuthManager{
     private init(){}
     
     public var signInUrl : URL? {
-        let scopes = "user-read-private"
+        let scopes = Constants.scopes
         let redirectUri = "https://linktr.ee/dhanajitkapali"
         let base = "https://accounts.spotify.com/authorize"
         let urlString = "\(base)?response_type=code&client_id=\(Constants.clientID)&scope=\(scopes)&redirect_uri=\(redirectUri)&show_dialog=TRUE"
