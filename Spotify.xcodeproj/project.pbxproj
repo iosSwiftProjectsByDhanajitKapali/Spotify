@@ -31,6 +31,7 @@
 		019E760827B2AEB600058722 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019E760727B2AEB600058722 /* UserProfile.swift */; };
 		01A1B87B27B40599009241BE /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A1B87A27B40599009241BE /* Extensions.swift */; };
 		01A1B87D27B40CF5009241BE /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01A1B87C27B40CF4009241BE /* Constants.swift */; };
+		01C9A8CA27BBD80400604E46 /* AuthResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C9A8C927BBD80400604E46 /* AuthResponse.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -60,6 +61,7 @@
 		019E760727B2AEB600058722 /* UserProfile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
 		01A1B87A27B40599009241BE /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		01A1B87C27B40CF4009241BE /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		01C9A8C927BBD80400604E46 /* AuthResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthResponse.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -139,6 +141,7 @@
 				019E760327B2AE8200058722 /* Playlist.swift */,
 				019E760527B2AEA200058722 /* Artist.swift */,
 				019E760727B2AEB600058722 /* UserProfile.swift */,
+				01C9A8C927BBD80400604E46 /* AuthResponse.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -276,6 +279,7 @@
 				019E75E827B2AD0600058722 /* LibraryViewController.swift in Sources */,
 				019E75CD27B2A8B000058722 /* SceneDelegate.swift in Sources */,
 				019E75FE27B2AE1200058722 /* APICaller.swift in Sources */,
+				01C9A8CA27BBD80400604E46 /* AuthResponse.swift in Sources */,
 				019E75F327B2AD6900058722 /* PlayerViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
