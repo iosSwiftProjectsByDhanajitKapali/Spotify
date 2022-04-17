@@ -14,5 +14,8 @@ struct Constants {
     
     struct URLs{
         static let tokenApiUrl = "https://accounts.spotify.com/api/token"
+        static let baseApiUrl = "https://api.spotify.com/v1"
     }
+    
+    
 }
