@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		012673A8280DBF5500A4AC68 /* SettingsModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 012673A7280DBF5500A4AC68 /* SettingsModels.swift */; };
 		019E75CB27B2A8B000058722 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019E75CA27B2A8B000058722 /* AppDelegate.swift */; };
 		019E75CD27B2A8B000058722 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019E75CC27B2A8B000058722 /* SceneDelegate.swift */; };
 		019E75CF27B2A8B000058722 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 019E75CE27B2A8B000058722 /* HomeViewController.swift */; };
@@ -35,6 +36,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		012673A7280DBF5500A4AC68 /* SettingsModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsModels.swift; sourceTree = "<group>"; };
 		019E75C727B2A8B000058722 /* Spotify.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Spotify.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		019E75CA27B2A8B000058722 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		019E75CC27B2A8B000058722 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -142,6 +144,7 @@
 				019E760527B2AEA200058722 /* Artist.swift */,
 				019E760727B2AEB600058722 /* UserProfile.swift */,
 				01C9A8C927BBD80400604E46 /* AuthResponse.swift */,
+				012673A7280DBF5500A4AC68 /* SettingsModels.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -262,6 +265,7 @@
 				01A1B87D27B40CF5009241BE /* Constants.swift in Sources */,
 				019E75FC27B2ADF300058722 /* AuthManager.swift in Sources */,
 				019E75F927B2ADBA00058722 /* SearchResultsViewController.swift in Sources */,
+				012673A8280DBF5500A4AC68 /* SettingsModels.swift in Sources */,
 				019E75E627B2ACF800058722 /* SearchViewController.swift in Sources */,
 				019E75E427B2ACDC00058722 /* TabBarViewController.swift in Sources */,
 				019E75EC27B2AD2800058722 /* SettingsViewController.swift in Sources */,
