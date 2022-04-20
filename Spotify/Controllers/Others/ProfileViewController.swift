@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 class ProfileViewController: UIViewController {
     
@@ -55,12 +56,36 @@ private extension ProfileViewController{
         }
     }
     
+    func createTableHeader(with string : String?){
+        var urlS : String? = "https://github.com/dhanajitkapali/myDigitalAssets/blob/master/dhanajitAvatar.jpeg"
+        urlS = "https://github.com/dhanajitkapali/myDigitalAssets/blob/master/facebook-icon.png"
+        guard let urlString = urlS, let url = URL(string: urlString) else{
+            return
+        }
+        
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: view.width, height: view.width/1.5))
+        let imageSize : CGFloat = headerView.height/2
+        let imageView = UIImageView(frame: CGRect(x: 0, y: 0, width: imageSize, height: imageSize))
+        headerView.addSubview(imageView)
+        //imageView.loadImage(url: url)
+        imageView.sd_setImage(with: url, placeholderImage: UIImage(systemName: "gear"))
+        imageView.center = headerView.center
+        imageView.contentMode = .scaleAspectFit
+        imageView.layer.masksToBounds = true
+        imageView.layer.cornerRadius = imageSize/2
+        imageView.backgroundColor = .red
+        
+        tableView.tableHeaderView = headerView
+        
+    }
+    
     func updateUI(with model : UserProfile){
         tableView.isHidden = false
         models.append("Full Name : \(model.display_name)")
         models.append("Email Adress : \(model.email)")
         models.append("User ID : \(model.id)")
         models.append("Plan : \(model.product)")
+        createTableHeader(with: model.images.first?.url)
         tableView.reloadData()
     }
     
