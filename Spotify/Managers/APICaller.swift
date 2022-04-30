@@ -48,7 +48,7 @@ final class APICaller{
                 
                 do {
                     let result = try JSONDecoder().decode(NewReleaseResponse.self, from: data)
-                    print(result)
+                    //print(result)
                     completion(.success(result))
                 } catch  {
                     print(error.localizedDescription)
@@ -61,7 +61,7 @@ final class APICaller{
     }
     
     
-    public func getFeturedPlaylists(completion: @escaping(Result<FeaturedPlaylistsReeponse, Error>) -> Void){
+    public func getFeturedPlaylists(completion: @escaping(Result<FeaturedPlaylistsResponse, Error>) -> Void){
         createRequest(with: URL(string: Constants.URLs.baseApiUrl + "/browse/featured-playlists?.limit=50"),
                       type: .GET) { baseRequest in
             let task = URLSession.shared.dataTask(with: baseRequest) { data, _, error in
@@ -71,10 +71,10 @@ final class APICaller{
                 }
                 
                 do {
-                    let result = try JSONDecoder().decode(FeaturedPlaylistsReeponse.self, from: data)
+                    let result = try JSONDecoder().decode(FeaturedPlaylistsResponse.self, from: data)
                     //let result = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
-                    print(result)
-                    //completion(.success(result))
+                    //print(result)
+                    completion(.success(result))
                 } catch  {
                     print(error.localizedDescription)
                     completion(.failure(error))
@@ -99,8 +99,8 @@ final class APICaller{
                 do {
                     let result = try JSONDecoder().decode(RecommendationsResponse.self, from: data)
                     //let result = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
-                    print("The result ->", result)
-                    //completion(.success(result))
+                    //print("The result ->", result)
+                    completion(.success(result))
                 } catch  {
                     print("Error ->", error.localizedDescription)
                     completion(.failure(error))
