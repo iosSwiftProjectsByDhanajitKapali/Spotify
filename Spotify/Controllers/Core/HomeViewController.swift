@@ -29,7 +29,11 @@ class HomeViewController: UIViewController {
         return spinner
     }()
     
+    //
     private var sections = [BrowseSectionType]()
+    private var newAlbums : [Album] = []
+    private var playlists : [Playlist] = []
+    private var tracks : [AudioTrack] = []
 }
 
 // MARK: - LifeCycle Methods
@@ -264,6 +268,9 @@ private extension HomeViewController{
     }
     
     func configureModels(newAlbums : [Album], playlists : [Playlist], tracks : [AudioTrack]){
+        self.newAlbums = newAlbums
+        self.playlists = playlists
+        self.tracks = tracks
         sections.append(.newRelease(viewModels: newAlbums.compactMap({ return
             NewReleaseCellViewModel(name: $0.name, artworkURL: URL(string: $0.images.first?.url ?? ""), numberOfTracks: $0.total_tracks, artistName: $0.artists.first?.name ?? "-")
         })))
@@ -271,7 +278,7 @@ private extension HomeViewController{
             FeaturedPlaylistCellViewModel(name: $0.name, artworkURL: URL(string: $0.images.first?.url ?? ""), creatorName: $0.owner.display_name)
         })))
         sections.append(.recommendedTracks(viewModels: tracks.compactMap({ return
-            RecommendedTrackCellViewModel(name: $0.name, artistName: $0.artists.first?.name ?? "-", artworkURL: URL(string: $0.album.images.first?.url ?? ""))
+            RecommendedTrackCellViewModel(name: $0.name, artistName: $0.artists.first?.name ?? "-", artworkURL: URL(string: $0.album?.images.first?.url ?? ""))
         })))
         collectionView.reloadData()
     }
@@ -286,6 +293,28 @@ private extension HomeViewController{
 
 // MARK: - Collection View Delegate DataSource
 extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSource{
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+        let section = sections[indexPath.section]
+        switch section{
+        case .newRelease:
+            let album = newAlbums[indexPath.row]
+            let vc = AlbumViewController(album: album)
+            vc.title = album.name
+            vc.navigationItem.largeTitleDisplayMode = .never
+            navigationController?.pushViewController(vc, animated: true)
+            
+        case .featuredPlaylists:
+            let playlist = playlists[indexPath.row]
+            let vc = PlaylistViewController(playlist: playlist)
+            vc.title = playlist.name
+            vc.navigationItem.largeTitleDisplayMode = .never
+            navigationController?.pushViewController(vc, animated: true)
+        case .recommendedTracks:
+            break
+        }
+    }
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let type = sections[indexPath.section]
         switch type{
