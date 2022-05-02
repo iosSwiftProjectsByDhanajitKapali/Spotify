@@ -11,6 +11,37 @@ class PlaylistViewController: UIViewController {
 
     private let playlist : Playlist
     
+    private let collectionView = UICollectionView(
+        frame: .zero, collectionViewLayout: UICollectionViewCompositionalLayout(sectionProvider: {
+            _,_ -> NSCollectionLayoutSection? in
+            
+            //Item
+            let item = NSCollectionLayoutItem(
+                layoutSize: NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(1.0),
+                    heightDimension: .fractionalHeight(1.0)))
+            
+            item.contentInsets = NSDirectionalEdgeInsets(top: 2, leading: 2, bottom: 2, trailing: 2)
+            
+            //Vertical Group in Horizontal Group
+            let verticalGroup = NSCollectionLayoutGroup.vertical(
+                layoutSize: NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(1.0),
+                    heightDimension: .absolute(60)
+                ),
+                subitem : item,
+                count : 1
+            )
+            
+            //Section
+            let section = NSCollectionLayoutSection(group: verticalGroup)
+            //section.orthogonalScrollingBehavior = .groupPaging
+            return section
+        })
+    )
+    
+    private var viewModels = [RecommendedTrackCellViewModel]()
+    
     init(playlist : Playlist){
         self.playlist = playlist
         super.init(nibName: nil, bundle: nil)
@@ -25,15 +56,62 @@ class PlaylistViewController: UIViewController {
         title = playlist.name
         view.backgroundColor = .systemBackground
         
-        APICaller.shared.getPlaylistDetials(for: playlist) { result in
-            switch result{
-            case .success(let model):
-                break
-            case .failure(let error):
-                break
+        view.addSubview(collectionView)
+        collectionView.register(RecommendedTracksCollectionViewCell.self, forCellWithReuseIdentifier: RecommendedTracksCollectionViewCell.identifier)
+        collectionView.backgroundColor = .systemBackground
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        
+        APICaller.shared.getPlaylistDetials(for: playlist) { [weak self]result in
+            DispatchQueue.main.async {
+                switch result{
+                case .success(let model):
+                    self?.viewModels = model.tracks.items.compactMap({
+                        RecommendedTrackCellViewModel(
+                            name: $0.track.name,
+                            artistName: $0.track.artists.first?.name ?? "-",
+                            artworkURL: URL(string: $0.track.album?.images.first?.url ?? "")
+                        )
+                    })
+                    self?.collectionView.reloadData()
+                case .failure(let error):
+                    print(error.localizedDescription)
+                }
             }
+            
         }
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        collectionView.frame = view.bounds
+    }
 
+}
+
+
+// MARK: - CollectionView Delegate and Datasource Methods
+extension PlaylistViewController : UICollectionViewDelegate, UICollectionViewDataSource{
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return viewModels.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: RecommendedTracksCollectionViewCell.identifier, for: indexPath) as? RecommendedTracksCollectionViewCell else {
+            return UICollectionViewCell();
+        }
+        cell.configure(with: viewModels[indexPath.row])
+        cell.backgroundColor = .red
+        return cell
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+        
+        //Play Song
+    }
 }
