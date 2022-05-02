@@ -165,7 +165,7 @@ final class APICaller{
     }
     
     ///Get Playlist detials (you need to pass the PlayList ID)
-    public func getPlaylistDetials(for playlist : Playlist, completion : @escaping(Result<AlbumDetailsResponse, Error>) -> Void){
+    public func getPlaylistDetials(for playlist : Playlist, completion : @escaping(Result<PlaylistDetailsResponse, Error>) -> Void){
         createRequest(with: URL(string: Constants.URLs.baseApiUrl + "/playlists/" + (playlist.id)), type: .GET) { request in
             let task = URLSession.shared.dataTask(with: request) { data, _, error in
                 guard let data = data, error == nil else {
@@ -175,11 +175,11 @@ final class APICaller{
                 }
                 
                 do {
-//                    let result = try JSONDecoder().decode(AlbumDetailsResponse.self, from: data)
+                    let result = try JSONDecoder().decode(PlaylistDetailsResponse.self, from: data)
+                    //print(result)
+                    completion(.success(result))
+//                    let result = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
 //                    print(result)
-//                    completion(.success(result))
-                    let result = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
-                    print(result)
                 }catch{
                     print(error)
                     completion(.failure(error))
