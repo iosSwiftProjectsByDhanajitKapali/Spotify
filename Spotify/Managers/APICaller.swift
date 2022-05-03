@@ -254,11 +254,11 @@ final class APICaller{
                 }
                 
                 do {
-//                    let result = try JSONDecoder().decode(CategoryPlaylistsResponse.self, from: data)
-//                    print(result)
-//                    completion(.success(result.playlists.items))
-                    let result = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
+                    let result = try JSONDecoder().decode(SearchResultResponse.self, from: data)
                     print(result)
+//                    completion(.success(result.playlists.items))
+//                    let result = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
+//                    print(result)
                 }catch{
                     print(error)
                     completion(.failure(error))
