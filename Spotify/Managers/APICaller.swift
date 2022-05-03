@@ -190,6 +190,61 @@ final class APICaller{
         }
     }
     
+    ///Get the Categories
+    public func getCategories(completion : @escaping(Result<[Category], Error>) -> Void){
+        createRequest(with: URL(string: Constants.URLs.baseApiUrl + "/browse/categories?limit=50"), type: .GET) { request in
+            let task = URLSession.shared.dataTask(with: request) { data, _, error in
+                guard let data = data, error == nil else {
+                    print("No data")
+                    completion(.failure(APIError.failedToGetData))
+                    return
+                }
+                
+                do {
+                    let result = try JSONDecoder().decode(AllCategoriesResponse.self, from: data)
+                    //print(result.categories.items)
+                    completion(.success(result.categories.items))
+//                    let result = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
+//                    print(result)
+                }catch{
+                    print(error)
+                    completion(.failure(error))
+                }
+
+            }
+            task.resume()
+        }
+    }
+    
+    
+    ///Get a PlayList according to the Category ID
+    public func getCategoryPlaylist(category : Category , completion : @escaping(Result<[Playlist], Error>) -> Void){
+        createRequest(with: URL(string: Constants.URLs.baseApiUrl + "/browse/categories/\(category.id)/playlists"), type: .GET) { request in
+            let task = URLSession.shared.dataTask(with: request) { data, _, error in
+                guard let data = data, error == nil else {
+                    print("No data")
+                    completion(.failure(APIError.failedToGetData))
+                    return
+                }
+                
+                do {
+                    let result = try JSONDecoder().decode(CategoryPlaylistsResponse.self, from: data)
+                    //print(result)
+                    completion(.success(result.playlists.items))
+//                    let result = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
+//                    print(result)
+                }catch{
+                    print(error)
+                    completion(.failure(error))
+                }
+
+            }
+            task.resume()
+        }
+    }
+    
+    
+    
     //Create Request Used in API calls
     enum HTTPMethod : String{
         case GET

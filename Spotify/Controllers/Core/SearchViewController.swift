@@ -73,6 +73,23 @@ extension SearchViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.backgroundColor = .systemBackground
+        
+        APICaller.shared.getCategories { result in
+            switch result {
+            case .success(let models):
+                let model = models.first!
+                APICaller.shared.getCategoryPlaylist(category: model) { result in
+                    switch result{
+                    case .success(let model):
+                        break
+                    case .failure(let error):
+                        break
+                    }
+                }
+            case .failure(let error):
+                print(error.localizedDescription)
+            }
+        }
     }
     
     override func viewDidLayoutSubviews() {
