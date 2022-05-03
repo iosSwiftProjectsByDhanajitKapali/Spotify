@@ -10,14 +10,13 @@ import UIKit
 class SearchViewController: UIViewController {
 
     // MARK: - Private Data Members
-    let searchController : UISearchController = {
+    private let searchController : UISearchController = {
         let vc = UISearchController(searchResultsController: SearchResultsViewController())
         vc.searchBar.placeholder = "Songs, Artists, Albums"
         vc.searchBar.searchBarStyle = .minimal
         vc.definesPresentationContext = true
         return vc
     }()
-       
     private let collectionView = UICollectionView(
         frame: .zero, collectionViewLayout: UICollectionViewCompositionalLayout(sectionProvider: {
             _,_ -> NSCollectionLayoutSection? in
@@ -56,6 +55,7 @@ class SearchViewController: UIViewController {
             return section
         })
     )
+    private var categories = [Category]()
     
 }
 
@@ -69,25 +69,28 @@ extension SearchViewController {
         searchController.searchResultsUpdater = self
         
         view.addSubview(collectionView)
-        collectionView.register(GenreCollectionViewCell.self, forCellWithReuseIdentifier: GenreCollectionViewCell.identifier)
+        collectionView.register(CategoryCollectionViewCell.self, forCellWithReuseIdentifier: CategoryCollectionViewCell.identifier)
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.backgroundColor = .systemBackground
         
-        APICaller.shared.getCategories { result in
-            switch result {
-            case .success(let models):
-                let model = models.first!
-                APICaller.shared.getCategoryPlaylist(category: model) { result in
-                    switch result{
-                    case .success(let model):
-                        break
-                    case .failure(let error):
-                        break
-                    }
+        APICaller.shared.getCategories {  result in
+            DispatchQueue.main.async { [weak self] in
+                switch result {
+                case .success(let categories):
+                    self?.categories = categories
+                    self?.collectionView.reloadData()
+    //                APICaller.shared.getCategoryPlaylist(category: model) { result in
+    //                    switch result{
+    //                    case .success(let model):
+    //                        break
+    //                    case .failure(let error):
+    //                        break
+    //                    }
+    //                }
+                case .failure(let error):
+                    print(error.localizedDescription)
                 }
-            case .failure(let error):
-                print(error.localizedDescription)
             }
         }
     }
@@ -113,16 +116,17 @@ extension SearchViewController : UISearchResultsUpdating{
 // MARK: -
 extension SearchViewController : UICollectionViewDataSource, UICollectionViewDelegate{
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: GenreCollectionViewCell.identifier, for: indexPath) as? GenreCollectionViewCell else{
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoryCollectionViewCell.identifier, for: indexPath) as? CategoryCollectionViewCell else{
             return UICollectionViewCell()
         }
-        cell.configure(string: "Boom")
+        let category = categories[indexPath.row]
+        cell.configure(with: CategoryCollectionViewCellViewModel(title: category.name, artworkURL: URL(string:  category.icons.first?.url ?? "")))
         //cell.backgroundColor = .red
         return cell
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 20
+        return categories.count
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
