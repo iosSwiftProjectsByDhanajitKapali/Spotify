@@ -80,14 +80,7 @@ extension SearchViewController {
                 case .success(let categories):
                     self?.categories = categories
                     self?.collectionView.reloadData()
-    //                APICaller.shared.getCategoryPlaylist(category: model) { result in
-    //                    switch result{
-    //                    case .success(let model):
-    //                        break
-    //                    case .failure(let error):
-    //                        break
-    //                    }
-    //                }
+    
                 case .failure(let error):
                     print(error.localizedDescription)
                 }
@@ -131,6 +124,14 @@ extension SearchViewController : UICollectionViewDataSource, UICollectionViewDel
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        collectionView.deselectItem(at: indexPath, animated: true)
+        let category = categories[indexPath.row]
+        let vc = CategoryViewController(category: category)
+        vc.navigationItem.largeTitleDisplayMode = .never
+        navigationController?.pushViewController(vc, animated: true)
     }
     
 }
