@@ -7,8 +7,8 @@
 
 import UIKit
 
-class SearchViewController: UIViewController {
-
+class SearchViewController: UIViewController{
+    
     // MARK: - Private Data Members
     private let searchController : UISearchController = {
         let vc = UISearchController(searchResultsController: SearchResultsViewController())
@@ -67,7 +67,7 @@ extension SearchViewController {
         view.backgroundColor = .systemBackground
         navigationItem.searchController = searchController
         searchController.searchResultsUpdater = self
-        
+        searchController.searchBar.delegate = self
         view.addSubview(collectionView)
         collectionView.register(CategoryCollectionViewCell.self, forCellWithReuseIdentifier: CategoryCollectionViewCell.identifier)
         collectionView.delegate = self
@@ -94,11 +94,21 @@ extension SearchViewController {
     }
 }
 
-// MARK: - UISearchResultsUpdating Methods
-extension SearchViewController : UISearchResultsUpdating{
+// MARK: - Private Methods
+private extension SearchViewController{
+    
+}
+
+
+// MARK: - UISearchBarDelegate & UISearchResultsUpdating Methods
+extension SearchViewController : UISearchBarDelegate, UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
-        guard let resultsController = searchController.searchResultsController as? SearchResultsViewController,  let query = searchController.searchBar.text, !query.trimmingCharacters(in: .whitespaces).isEmpty else{
-        return }
+        
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        guard let resultsController = searchController.searchResultsController as? SearchResultsViewController,  let query = searchBar.text, !query.trimmingCharacters(in: .whitespaces).isEmpty else{
+            return }
         
         APICaller.shared.search(with: query) { result in
             DispatchQueue.main.async { [weak self] in
@@ -110,13 +120,12 @@ extension SearchViewController : UISearchResultsUpdating{
                 }
             }
         }
-        //print(query)
-        //Perform API call for searching
+
     }
 }
 
-
-// MARK: -
+    
+// MARK: - UICollectionViewDataSource & UICollectionViewDelegate Methods
 extension SearchViewController : UICollectionViewDataSource, UICollectionViewDelegate{
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoryCollectionViewCell.identifier, for: indexPath) as? CategoryCollectionViewCell else{
