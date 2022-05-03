@@ -243,7 +243,31 @@ final class APICaller{
         }
     }
     
-    
+    ///Get SearchResult according to the query passed
+    public func search(with query : String , completion : @escaping(Result<[String], Error>) -> Void){
+        createRequest(with: URL(string: Constants.URLs.baseApiUrl + "/search?type=album,playlist,artist,track&q=\(query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")"), type: .GET) { request in
+            let task = URLSession.shared.dataTask(with: request) { data, _, error in
+                guard let data = data, error == nil else {
+                    print("No data")
+                    completion(.failure(APIError.failedToGetData))
+                    return
+                }
+                
+                do {
+//                    let result = try JSONDecoder().decode(CategoryPlaylistsResponse.self, from: data)
+//                    print(result)
+//                    completion(.success(result.playlists.items))
+                    let result = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
+                    print(result)
+                }catch{
+                    print(error)
+                    completion(.failure(error))
+                }
+
+            }
+            task.resume()
+        }
+    }
     
     //Create Request Used in API calls
     enum HTTPMethod : String{

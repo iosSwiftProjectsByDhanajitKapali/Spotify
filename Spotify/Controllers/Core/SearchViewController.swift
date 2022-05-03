@@ -100,7 +100,17 @@ extension SearchViewController : UISearchResultsUpdating{
         guard let resultsController = searchController.searchResultsController as? SearchResultsViewController,  let query = searchController.searchBar.text, !query.trimmingCharacters(in: .whitespaces).isEmpty else{
         return }
         
-        print(query)
+        APICaller.shared.search(with: query) { result in
+            DispatchQueue.main.async { [weak self] in
+                switch result{
+                case .success(let results):
+                    break
+                case .failure(let error):
+                    break
+                }
+            }
+        }
+        //print(query)
         //Perform API call for searching
     }
 }
