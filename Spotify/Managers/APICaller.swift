@@ -244,8 +244,8 @@ final class APICaller{
     }
     
     ///Get SearchResult according to the query passed
-    public func search(with query : String , completion : @escaping(Result<[String], Error>) -> Void){
-        createRequest(with: URL(string: Constants.URLs.baseApiUrl + "/search?type=album,playlist,artist,track&q=\(query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")"), type: .GET) { request in
+    public func search(with query : String , completion : @escaping(Result<[SearchResult], Error>) -> Void){
+        createRequest(with: URL(string: Constants.URLs.baseApiUrl + "/search?limit=10&type=album,playlist,artist,track&q=\(query.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? "")"), type: .GET) { request in
             let task = URLSession.shared.dataTask(with: request) { data, _, error in
                 guard let data = data, error == nil else {
                     print("No data")
@@ -255,8 +255,13 @@ final class APICaller{
                 
                 do {
                     let result = try JSONDecoder().decode(SearchResultResponse.self, from: data)
-                    print(result)
-//                    completion(.success(result.playlists.items))
+                    //print(result)
+                    var searchResults : [SearchResult] = []
+                    searchResults.append(contentsOf: result.tracks.items.compactMap({ .track(model: $0)}))
+                    searchResults.append(contentsOf: result.albums.items.compactMap({ .album(model: $0)}))
+                    searchResults.append(contentsOf: result.artists.items.compactMap({ .artist(model: $0)}))
+                    searchResults.append(contentsOf: result.playlists.items.compactMap({ .playlist(model: $0)}))
+                    completion(.success(searchResults))
 //                    let result = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
 //                    print(result)
                 }catch{

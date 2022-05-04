@@ -114,9 +114,10 @@ extension SearchViewController : UISearchBarDelegate, UISearchResultsUpdating {
             DispatchQueue.main.async { [weak self] in
                 switch result{
                 case .success(let results):
-                    break
+                    resultsController.update(with : results)
+                    
                 case .failure(let error):
-                    break
+                    print(error.localizedDescription)
                 }
             }
         }
