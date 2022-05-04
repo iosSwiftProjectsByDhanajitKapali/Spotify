@@ -9,21 +9,71 @@ import UIKit
 
 class PlayerViewController: UIViewController {
 
+    // MARK: - Private Data Members
+    private let imageView : UIImageView = {
+       let imageView = UIImageView()
+        imageView.contentMode = .scaleAspectFill
+        imageView.backgroundColor = .systemBlue
+        return imageView
+    }()
+    
+    private let controlsView = PlayerControlsView()
+    
+    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        view.backgroundColor = .systemBackground
+        view.addSubview(imageView)
+        view.addSubview(controlsView)
+        //controlsView.backgroundColor = .red
+        controlsView.delegate = self
+        configureBarButtons()
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        imageView.frame = CGRect(x: 0, y: view.safeAreaInsets.top, width: view.width, height: view.width)
+        controlsView.frame = CGRect(
+            x: 10,
+            y: view.width+70,
+            width: view.width-20,
+            height: view.height-imageView.height-view.safeAreaInsets.top-view.safeAreaInsets.bottom-15)
     }
-    */
+    
+}
 
+
+// MARK: - Private Methods
+private extension PlayerViewController {
+    
+    func configureBarButtons(){
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(didTapClose))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(didTapAction))
+    }
+    
+    @objc func didTapClose(){
+        dismiss(animated: true)
+    }
+    
+    @objc func didTapAction(){
+        //Action Sheet
+    }
+}
+
+
+// MARK: - PlayerControlsViewDelegate Methods
+extension PlayerViewController : PlayerControlsViewDelegate{
+    func playerControlsViewDidTapPlayPauseButton(_ playerControlsView: PlayerControlsView) {
+        print("Play Pause")
+    }
+    
+    func playerControlsViewDidTapForwardButton(_ playerControlsView: PlayerControlsView) {
+        print("Forward")
+    }
+    
+    func playerControlsViewDidTapBackButton(_ playerControlsView: PlayerControlsView) {
+        print("Back")
+    }
+    
+    
 }

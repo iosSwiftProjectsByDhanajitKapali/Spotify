@@ -318,6 +318,7 @@ private extension HomeViewController{
 
 // MARK: - Collection View Delegate DataSource
 extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSource{
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         collectionView.deselectItem(at: indexPath, animated: true)
         let section = sections[indexPath.section]
@@ -336,7 +337,8 @@ extension HomeViewController : UICollectionViewDelegate, UICollectionViewDataSou
             vc.navigationItem.largeTitleDisplayMode = .never
             navigationController?.pushViewController(vc, animated: true)
         case .recommendedTracks:
-            break
+            let track = tracks[indexPath.row]
+            PlayBackPresenter.startPlayback(from: self, track: track)
         }
     }
     
