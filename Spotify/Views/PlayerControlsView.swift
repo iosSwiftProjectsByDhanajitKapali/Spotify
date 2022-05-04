@@ -13,6 +13,12 @@ protocol PlayerControlsViewDelegate : AnyObject{
     func playerControlsViewDidTapBackButton(_ playerControlsView : PlayerControlsView)
 }
 
+struct PlayerControlsViewViewModel {
+    let title : String?
+    let subtitle : String?
+}
+
+
 final class PlayerControlsView : UIView{
     
     weak var delegate : PlayerControlsViewDelegate?
@@ -99,6 +105,11 @@ final class PlayerControlsView : UIView{
         //backButton.backgroundColor = .blue
         nextButton.frame = CGRect(x: playPauseButton.right+80, y: bottom-120, width: buttonSize, height: buttonSize)
         //nextButton.backgroundColor = .green
+    }
+    
+    func configure(with viewModel : PlayerControlsViewViewModel){
+        nameLabel.text = viewModel.title
+        subtitleLabel.text = viewModel.subtitle
     }
     
 }

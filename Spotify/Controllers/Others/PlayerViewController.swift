@@ -6,9 +6,12 @@
 //
 
 import UIKit
+import SDWebImage
 
 class PlayerViewController: UIViewController {
 
+    weak var dataSource : PlayerDataSource?
+    
     // MARK: - Private Data Members
     private let imageView : UIImageView = {
        let imageView = UIImageView()
@@ -28,6 +31,7 @@ class PlayerViewController: UIViewController {
         //controlsView.backgroundColor = .red
         controlsView.delegate = self
         configureBarButtons()
+        configure()
     }
     
     override func viewDidLayoutSubviews() {
@@ -45,6 +49,11 @@ class PlayerViewController: UIViewController {
 
 // MARK: - Private Methods
 private extension PlayerViewController {
+    
+    func configure(){
+        imageView.sd_setImage(with: dataSource?.imageURL)
+        controlsView.configure(with: PlayerControlsViewViewModel(title: dataSource?.songName, subtitle: dataSource?.subtitle))
+    }
     
     func configureBarButtons(){
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(didTapClose))
