@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import AVFoundation
 
 protocol PlayerDataSource : AnyObject{
     var songName : String? {get}
@@ -19,6 +20,7 @@ final class PlayBackPresenter {
     static let shared = PlayBackPresenter()
     private var track : AudioTrack?
     private var tracks = [AudioTrack]()
+    var player : AVPlayer?
     
     var currentTrack : AudioTrack? {
         if let track = track , tracks.isEmpty{
@@ -34,12 +36,19 @@ final class PlayBackPresenter {
         from viewController : UIViewController,
         track : AudioTrack){
             
+            guard let songPreviewURL = URL(string: track.preview_url ?? "") else {return}
+            player = AVPlayer(url: songPreviewURL)
+            player?.volume = 0.5
+            
             self.track = track
             self.tracks = []
             let vc = PlayerViewController()
             vc.title = track.name
             vc.dataSource = self
-            viewController.present(UINavigationController(rootViewController: vc), animated: true)
+            vc.delegate = self
+            viewController.present(UINavigationController(rootViewController: vc), animated: true) { [weak self] in
+                self?.player?.play()
+            }
         }
     
     
@@ -66,6 +75,39 @@ extension PlayBackPresenter : PlayerDataSource {
     
     var imageURL: URL? {
         return URL(string: currentTrack?.album?.images.first?.url ?? "")
+    }
+        
+}
+
+
+extension PlayBackPresenter : PlayerViewControllerDelegate{
+    func didTapPlayPause() {
+        if let player = player{
+            if player.timeControlStatus == .playing{
+                player.pause()
+            }else{
+                player.play()
+            }
+        }
+    }
+    
+    func didTapForward() {
+        if tracks.isEmpty{  //Not a playlist or album
+            player?.pause()
+        }
+        else{
+            
+        }
+    }
+    
+    func didTapBackward() {
+        if tracks.isEmpty{  //Not a playlist or album
+            player?.pause()
+            player?.play()
+        }
+        else{
+            
+        }
     }
     
     

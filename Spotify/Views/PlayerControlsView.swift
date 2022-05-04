@@ -21,6 +21,7 @@ struct PlayerControlsViewViewModel {
 
 final class PlayerControlsView : UIView{
     
+    private var isPlaying  = true
     weak var delegate : PlayerControlsViewDelegate?
     
     // MARK: - Private Data Members
@@ -126,6 +127,12 @@ private extension PlayerControlsView{
     }
     
     @objc func didTapPlayPause(){
+        self.isPlaying = !isPlaying
         delegate?.playerControlsViewDidTapPlayPauseButton(self)
+        
+        //Update the Play/Pause icon
+        let play = UIImage(systemName: "play.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 34, weight: .regular))
+        let pause = UIImage(systemName: "pause", withConfiguration: UIImage.SymbolConfiguration(pointSize: 34, weight: .regular))
+        playPauseButton.setImage(isPlaying ? pause : play, for: .normal)
     }
 }
