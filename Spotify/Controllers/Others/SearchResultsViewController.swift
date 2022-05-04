@@ -12,8 +12,15 @@ struct SearchResultWithSection {
     let items : [SearchResult]
 }
 
+protocol SearchResultsViewControllerDelegate : AnyObject{
+    func didTapResult(_ result : SearchResult)
+    //func showResult(_ controller : UIViewController)
+}
+
 class SearchResultsViewController: UIViewController {
 
+    weak var delegate : SearchResultsViewControllerDelegate?
+    
     private var resultsWithSections : [SearchResultWithSection] = []
     private let tableView : UITableView = {
         let tableView = UITableView(frame: .zero, style: .grouped)
@@ -108,5 +115,13 @@ extension SearchResultsViewController : UITableViewDelegate, UITableViewDataSour
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return resultsWithSections[section].title
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        
+        //Open the corresponding screen for the type of item selected from the search result
+        let result = resultsWithSections[indexPath.section].items[indexPath.row]
+        delegate?.didTapResult(result)
     }
 }

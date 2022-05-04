@@ -110,6 +110,7 @@ extension SearchViewController : UISearchBarDelegate, UISearchResultsUpdating {
         guard let resultsController = searchController.searchResultsController as? SearchResultsViewController,  let query = searchBar.text, !query.trimmingCharacters(in: .whitespaces).isEmpty else{
             return }
         
+        resultsController.delegate = self
         APICaller.shared.search(with: query) { result in
             DispatchQueue.main.async { [weak self] in
                 switch result{
@@ -152,6 +153,29 @@ extension SearchViewController : UICollectionViewDataSource, UICollectionViewDel
         let vc = CategoryViewController(category: category)
         vc.navigationItem.largeTitleDisplayMode = .never
         navigationController?.pushViewController(vc, animated: true)
+    }
+    
+}
+
+// MARK: - SearchResultsViewControllerDelegate Methods
+extension SearchViewController : SearchResultsViewControllerDelegate {
+    func didTapResult(_ result: SearchResult) {
+        switch result {
+        case .artist(let model) :
+            break
+        case .track(let model) :
+            break
+        case .album(let model) :
+            let vc = AlbumViewController(album: model)
+            vc.navigationItem.largeTitleDisplayMode = .never
+            navigationController?.pushViewController(vc, animated: true)
+
+        case .playlist(let model) :
+            let vc = PlaylistViewController(playlist: model)
+            vc.navigationItem.largeTitleDisplayMode = .never
+            navigationController?.pushViewController(vc, animated: true)
+        }
+
     }
     
 }
