@@ -11,6 +11,7 @@ protocol PlayerControlsViewDelegate : AnyObject{
     func playerControlsViewDidTapPlayPauseButton(_ playerControlsView : PlayerControlsView)
     func playerControlsViewDidTapForwardButton(_ playerControlsView : PlayerControlsView)
     func playerControlsViewDidTapBackButton(_ playerControlsView : PlayerControlsView)
+    func playerControlsView(_ playerControlsView : PlayerControlsView, didSlideSlider value :Float)
 }
 
 struct PlayerControlsViewViewModel {
@@ -79,6 +80,7 @@ final class PlayerControlsView : UIView{
         addSubview(nameLabel)
         addSubview(subtitleLabel)
         addSubview(volumeSlider)
+        volumeSlider.addTarget(self, action: #selector(didSlideSlider(_:)), for: .valueChanged)
         addSubview(backButton)
         addSubview(nextButton)
         addSubview(playPauseButton)
@@ -118,6 +120,12 @@ final class PlayerControlsView : UIView{
 
 // MARK: - Private Methods
 private extension PlayerControlsView{
+    
+    @objc func didSlideSlider(_ slider : UISlider){
+        let value = slider.value
+        delegate?.playerControlsView(self, didSlideSlider: value)
+    }
+    
     @objc func didTapBack(){
         delegate?.playerControlsViewDidTapBackButton(self)
     }

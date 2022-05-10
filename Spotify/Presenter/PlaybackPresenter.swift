@@ -81,6 +81,10 @@ extension PlayBackPresenter : PlayerDataSource {
 
 
 extension PlayBackPresenter : PlayerViewControllerDelegate{
+    func didSlideSlider(_ value: Float) {
+        player?.volume = value
+    }
+    
     func didTapPlayPause() {
         if let player = player{
             if player.timeControlStatus == .playing{
