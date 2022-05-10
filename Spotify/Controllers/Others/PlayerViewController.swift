@@ -25,7 +25,7 @@ class PlayerViewController: UIViewController {
     private let imageView : UIImageView = {
        let imageView = UIImageView()
         imageView.contentMode = .scaleAspectFill
-        imageView.backgroundColor = .systemBlue
+        //imageView.backgroundColor = .systemBlue
         return imageView
     }()
     
@@ -78,6 +78,14 @@ private extension PlayerViewController {
     }
 }
 
+
+// MARK: - Public Methods
+extension PlayerViewController {
+    
+    func refreshUI(){
+        configure()
+    }
+}
 
 // MARK: - PlayerControlsViewDelegate Methods
 extension PlayerViewController : PlayerControlsViewDelegate{
