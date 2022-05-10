@@ -9,22 +9,92 @@ import UIKit
 
 class LibraryViewController: UIViewController {
 
+    // MARK: - Private Data Members
+    private let playlistsVC = LibraryPlaylistsViewController()
+    private let albumsVC = LibraryAlbumsViewController()
+    
+    private let scrollView : UIScrollView = {
+        let scrollView = UIScrollView()
+        scrollView.isPagingEnabled = true
+        
+        return scrollView
+    }()
+    
+    private let toggleView = LibraryToggleView()
+    
+}
+
+
+// MARK: - LifeCycle Methods
+extension LibraryViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
         view.backgroundColor = .systemBackground
+        
+        view.addSubview(toggleView)
+        toggleView.delegate = self
+        
+        view.addSubview(scrollView)
+        scrollView.delegate = self
+        scrollView.contentSize = CGSize(width: view.width*2, height: scrollView.height)
+        
+        addChildren()
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        scrollView.frame = CGRect(
+            x: 0,
+            y: view.safeAreaInsets.top+55,
+            width: view.width,
+            height: view.height-view.safeAreaInsets.top-view.safeAreaInsets.bottom-55
+        )
+        toggleView.frame = CGRect(
+            x: 0,
+            y: view.safeAreaInsets.top,
+            width: 210,
+            height: 60)
     }
-    */
+}
 
+
+// MARK: - Private Methods
+private extension LibraryViewController{
+    func addChildren(){
+        addChild(playlistsVC)
+        scrollView.addSubview(playlistsVC.view)
+        playlistsVC.view.frame = CGRect(x: 0, y: 0, width: scrollView.width, height: scrollView.height)
+        playlistsVC.didMove(toParent: self)
+        
+        addChild(albumsVC)
+        scrollView.addSubview(albumsVC.view)
+        albumsVC.view.frame = CGRect(x: view.width, y: 0, width: scrollView.width, height: scrollView.height)
+        albumsVC.didMove(toParent: self)
+    }
+}
+
+
+// MARK: - ScrollView Delegate Methods
+extension LibraryViewController : UIScrollViewDelegate{
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        if scrollView.contentOffset.x >= (view.width-100){
+            toggleView.updateView(for: .album)
+        }else{
+            toggleView.updateView(for: .playlist)
+        }
+    }
+    
+}
+
+
+// MARK: - LibraryToggleViewDelegate Methods
+extension LibraryViewController : LibraryToggleViewDelegate{
+    func libraryToggleViewDidTapPlaylists(_ toggleView: LibraryToggleView) {
+        scrollView.setContentOffset(.zero, animated: true)
+    }
+    
+    func libraryToggleViewDidTapAlbums(_ toggleView: LibraryToggleView) {
+        scrollView.setContentOffset(CGPoint(x: view.width, y: 0), animated: true)
+    }
+    
 }
