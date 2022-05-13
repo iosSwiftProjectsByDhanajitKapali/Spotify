@@ -216,6 +216,7 @@ final class APICaller{
         }
     }
     
+    ///Create a New Playlist (You need to Provide "UserID" and "PlayListName")
     public func createPlaylist(with name : String, completion : @escaping (Bool) -> Void){
         getCurrentUserProfile { [weak self] result in
             switch result{
