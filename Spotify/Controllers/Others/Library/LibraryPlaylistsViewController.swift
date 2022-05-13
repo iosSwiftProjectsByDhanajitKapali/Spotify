@@ -74,10 +74,9 @@ private extension LibraryPlaylistsViewController{
 }
 
 
-// MARK: - ActionLabelViewDelegate Methods
-extension LibraryPlaylistsViewController : ActionLabelViewDelegate{
-    func actionLabelViewDidTapButton(_ actionView: ActionLabelView) {
-        //Show an Alert, and ask USER to input the PlayList Name
+// MARK: - Public Methods
+extension LibraryPlaylistsViewController {
+    func showCreatePlayListAlert(){
         let alert = UIAlertController(title: "Create New Playlist", message: "Enter playlist name", preferredStyle: .alert)
         alert.addTextField{
             textField in
@@ -101,6 +100,15 @@ extension LibraryPlaylistsViewController : ActionLabelViewDelegate{
             
         }))
         present(alert, animated: true, completion: nil)
+
+    }
+}
+
+// MARK: - ActionLabelViewDelegate Methods
+extension LibraryPlaylistsViewController : ActionLabelViewDelegate{
+    func actionLabelViewDidTapButton(_ actionView: ActionLabelView) {
+        //Show an Alert, and ask USER to input the PlayList Name
+        showCreatePlayListAlert()
     }
     
     

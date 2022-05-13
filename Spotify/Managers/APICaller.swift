@@ -235,10 +235,18 @@ final class APICaller{
                         }
                         
                         do{
-//                            let result = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
-//                            print(result)
-                            let result = try JSONDecoder().decode(Playlist.self, from: data)
-                            completion(true)
+                            let result = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
+                            //print(result)
+                            if let response = result as? [String : Any], response["id"] as? String != nil{
+                                print("PlayList Created")
+                                completion(true)
+                            }else{
+                                print("Failed to Creat Playlist")
+                                completion(false)
+                            }
+                            
+                            //let result = try JSONDecoder().decode(Playlist.self, from: data)
+                            
                         }catch{
                             print(error.localizedDescription)
                             completion(false)
