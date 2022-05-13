@@ -190,6 +190,44 @@ final class APICaller{
         }
     }
     
+    ///Get Current Users Playlists
+    public func getCurrentUserPlaylists(completion : @escaping (Result<[Playlist], Error>) -> Void){
+        createRequest(with: URL(string: Constants.URLs.baseApiUrl + "/me/playlists/?limit=50") , type: .GET) { request in
+            let task = URLSession.shared.dataTask(with: request) { data, _, error in
+                guard let data = data, error == nil else {
+                    print("No data")
+                    completion(.failure(APIError.failedToGetData))
+                    return
+                }
+                
+                do {
+                    let result = try JSONDecoder().decode(LibraryPlaylistResponse.self, from: data)
+                    //print(result)
+                    completion(.success(result.items))
+//                    let result = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
+//                    print(result)
+                }catch{
+                    print(error)
+                    completion(.failure(error))
+                }
+
+            }
+            task.resume()
+        }
+    }
+    
+    public func createPlaylist(with name : String, completion : @escaping (Bool) -> Void){
+        
+    }
+    
+    public func addTrackToPlaylist(track : AudioTrack, playlist: Playlist, completion : @escaping (Bool) -> Void){
+        
+    }
+    
+    public func removeTrackFromPlaylist(track : AudioTrack, playlist : Playlist, completion : @escaping (Bool) -> Void){
+        
+    }
+    
     ///Get the Categories
     public func getCategories(completion : @escaping(Result<[Category], Error>) -> Void){
         createRequest(with: URL(string: Constants.URLs.baseApiUrl + "/browse/categories?limit=50"), type: .GET) { request in
@@ -215,7 +253,6 @@ final class APICaller{
             task.resume()
         }
     }
-    
     
     ///Get a PlayList according to the Category ID
     public func getCategoryPlaylist(category : Category , completion : @escaping(Result<[Playlist], Error>) -> Void){
