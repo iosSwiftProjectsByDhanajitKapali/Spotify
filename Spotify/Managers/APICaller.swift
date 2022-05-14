@@ -164,6 +164,40 @@ final class APICaller{
         }
     }
     
+    ///Get Current User's Saved Albums
+    public func getCurrentUserAlbums(completion : @escaping(Result<[Album], Error>) -> Void){
+        createRequest(
+            with: URL(string: Constants.URLs.baseApiUrl + "/me/albums" ),
+            type: .GET
+        )
+        { request in
+            let task = URLSession.shared.dataTask(with: request) { data, _, error in
+                guard let data = data, error == nil else {
+                    print("No data")
+                    completion(.failure(APIError.failedToGetData))
+                    return
+                }
+                
+                do {
+                    let result = try JSONDecoder().decode(LibraryAlbumsResponse.self, from: data)
+                    //print(result)
+                    completion(.success(result.items))
+                    
+//                    let result = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
+//                    print(result)
+                }catch{
+                    print(error)
+                    completion(.failure(error))
+                }
+
+            }
+            task.resume()
+        }
+    }
+    
+    
+    // MARK: - Playlists APIs
+    
     ///Get Playlist detials (you need to pass the PlayList ID)
     public func getPlaylistDetials(for playlist : Playlist, completion : @escaping(Result<PlaylistDetailsResponse, Error>) -> Void){
         createRequest(with: URL(string: Constants.URLs.baseApiUrl + "/playlists/" + (playlist.id)), type: .GET) { request in
@@ -264,6 +298,7 @@ final class APICaller{
         }
     }
     
+    ///Add a track to a Playlist
     public func addTrackToPlaylist(track : AudioTrack, playlist: Playlist, completion : @escaping (Bool) -> Void){
         createRequest(with: URL(string: Constants.URLs.baseApiUrl + "/playlists/\(playlist.id)/tracks"), type: .POST) { baseRequest in
             var request = baseRequest
@@ -306,6 +341,7 @@ final class APICaller{
         }
     }
     
+    //Remove a track from a playlist
     public func removeTrackFromPlaylist(track : AudioTrack, playlist : Playlist, completion : @escaping (Bool) -> Void){
         createRequest(
             with: URL(string: Constants.URLs.baseApiUrl + "/playlists/\(playlist.id)/tracks"),

@@ -54,6 +54,7 @@
 		01BDAA6A281FF0A400EF5AD6 /* PlayerHeaderViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01BDAA69281FF0A400EF5AD6 /* PlayerHeaderViewModel.swift */; };
 		01C9A8CA27BBD80400604E46 /* AuthResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01C9A8C927BBD80400604E46 /* AuthResponse.swift */; };
 		01CF204628106B140087BEA1 /* UIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01CF204528106B140087BEA1 /* UIImageView.swift */; };
+		01E23440282FB2A2000C9BB8 /* LibraryAlbumsResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E2343F282FB2A2000C9BB8 /* LibraryAlbumsResponse.swift */; };
 		01E9A77B2820F22F00A753F4 /* TitleHeaderCollectionReusableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E9A77A2820F22F00A753F4 /* TitleHeaderCollectionReusableView.swift */; };
 		01E9A77D2820FD8100A753F4 /* AlbumTrackCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E9A77C2820FD8100A753F4 /* AlbumTrackCollectionViewCell.swift */; };
 		01E9A77F2820FF0700A753F4 /* AlbumTrackCollectionViewCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 01E9A77E2820FF0700A753F4 /* AlbumTrackCollectionViewCellViewModel.swift */; };
@@ -122,6 +123,7 @@
 		01BDAA69281FF0A400EF5AD6 /* PlayerHeaderViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerHeaderViewModel.swift; sourceTree = "<group>"; };
 		01C9A8C927BBD80400604E46 /* AuthResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthResponse.swift; sourceTree = "<group>"; };
 		01CF204528106B140087BEA1 /* UIImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageView.swift; sourceTree = "<group>"; };
+		01E2343F282FB2A2000C9BB8 /* LibraryAlbumsResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LibraryAlbumsResponse.swift; sourceTree = "<group>"; };
 		01E9A77A2820F22F00A753F4 /* TitleHeaderCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleHeaderCollectionReusableView.swift; sourceTree = "<group>"; };
 		01E9A77C2820FD8100A753F4 /* AlbumTrackCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumTrackCollectionViewCell.swift; sourceTree = "<group>"; };
 		01E9A77E2820FF0700A753F4 /* AlbumTrackCollectionViewCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlbumTrackCollectionViewCellViewModel.swift; sourceTree = "<group>"; };
@@ -254,6 +256,7 @@
 				01E9A78C282147CB00A753F4 /* SearchResultResponse.swift */,
 				01E9A78E28214A6000A753F4 /* SearchResult.swift */,
 				012DF621282B78A500A39C59 /* LibraryPlaylistsResponse.swift */,
+				01E2343F282FB2A2000C9BB8 /* LibraryAlbumsResponse.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -508,6 +511,7 @@
 				01E9A78D282147CB00A753F4 /* SearchResultResponse.swift in Sources */,
 				01E9A77B2820F22F00A753F4 /* TitleHeaderCollectionReusableView.swift in Sources */,
 				01CF204628106B140087BEA1 /* UIImageView.swift in Sources */,
+				01E23440282FB2A2000C9BB8 /* LibraryAlbumsResponse.swift in Sources */,
 				01BDAA68281FED3900EF5AD6 /* PlayListHeaderCollectionReusableView.swift in Sources */,
 				019E75CF27B2A8B000058722 /* HomeViewController.swift in Sources */,
 				019E75EF27B2AD4100058722 /* AuthViewController.swift in Sources */,
