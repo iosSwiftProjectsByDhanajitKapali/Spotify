@@ -92,7 +92,7 @@ private extension HomeViewController{
         let model = tracks[indexPath.row]
         let actionSheet = UIAlertController(
             title: model.name,
-            message: "Would you like to add this in a playlist",
+            message: "Would you like to add this track in a playlist",
             preferredStyle: .actionSheet
         )
         actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))

@@ -8,7 +8,9 @@
 import UIKit
 
 class PlaylistViewController: UIViewController {
-
+    
+    public var ownedByUser = false
+    
     private let playlist : Playlist
     
     private let collectionView = UICollectionView(
@@ -93,6 +95,10 @@ class PlaylistViewController: UIViewController {
         }
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(didTapShare))
+        
+        //Add gesture to deleta a song if the playlist is owned by user
+        let gesture = UILongPressGestureRecognizer(target: self, action: #selector(didLongPress(_:)))
+        collectionView.addGestureRecognizer(gesture)
     }
     
     override func viewDidLayoutSubviews() {
@@ -104,6 +110,47 @@ class PlaylistViewController: UIViewController {
 
 // MARK: - Private Methods
 private extension PlaylistViewController{
+    
+    @objc func didLongPress(_ gesture : UILongPressGestureRecognizer){
+        guard gesture.state == .began else{
+            return
+        }
+        
+        let touchPoint = gesture.location(in: collectionView)
+        guard let indexPath = collectionView.indexPathForItem(at: touchPoint) else{
+            return
+        }
+        
+        //Get the track selected
+        let model = tracks[indexPath.row]
+        let actionSheet = UIAlertController(
+            title: model.name,
+            message: "Would you like to remove this track in a playlist",
+            preferredStyle: .actionSheet
+        )
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        actionSheet.addAction(UIAlertAction(title: "Remove from playlist", style: .destructive, handler: { [weak self] _ in
+            guard let strongSelf = self else{
+                return
+            }
+            //Make Api Call to remove the Track from Playlist
+            APICaller.shared.removeTrackFromPlaylist(
+                track: model,
+                playlist: strongSelf.playlist ) { result in
+                    DispatchQueue.main.async {
+                        if result{
+                            strongSelf.tracks.remove(at: indexPath.row)
+                            strongSelf.viewModels.remove(at: indexPath.row)
+                            strongSelf.collectionView.reloadData()
+                            print("Removed from Playlist")
+                        }else{
+                            print("Failed to remove from Playlist")
+                        }
+                    }
+                }
+        }))
+        present(actionSheet, animated: true, completion: nil)
+    }
     
     @objc func didTapShare(){
         guard let url = URL(string: playlist.external_urls["spotify"] ?? "" ) else{
