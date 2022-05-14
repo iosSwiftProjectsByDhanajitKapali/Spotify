@@ -10,6 +10,9 @@ import UIKit
 class LibraryPlaylistsViewController: UIViewController {
 
     var playlists = [Playlist]()
+    
+    public var selectionHandler : ((Playlist) -> Void)?
+    
     private let noPlayListView = ActionLabelView()
     
     private let tableView : UITableView = {
@@ -34,6 +37,11 @@ extension LibraryPlaylistsViewController{
         setUpNoPlayListsView()
         fetchUserCreatedPlaylists()
         
+        //Add a close button (when this VC is opened through a LongPress)
+        if selectionHandler != nil{
+            navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .close, target: self, action: #selector(didTapCloseVC))
+        }
+        
     }
 
     override func viewDidLayoutSubviews() {
@@ -47,6 +55,10 @@ extension LibraryPlaylistsViewController{
 
 // MARK: - Private Methods
 private extension LibraryPlaylistsViewController{
+    
+    @objc func didTapCloseVC(){
+        dismiss(animated: true)
+    }
     
     func fetchUserCreatedPlaylists(){
         APICaller.shared.getCurrentUserPlaylists { [weak self] result in
@@ -151,5 +163,21 @@ extension LibraryPlaylistsViewController : UITableViewDelegate, UITableViewDataS
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+        let playlist = playlists[indexPath.row]
+        
+        //To check is the touch was a LongPress or a Simple tap
+        guard selectionHandler == nil else{
+            selectionHandler?(playlist)
+            dismiss(animated: true)
+            return
+        }
+        
+        let vc = PlaylistViewController(playlist: playlist)
+        vc.navigationItem.largeTitleDisplayMode = .never
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
