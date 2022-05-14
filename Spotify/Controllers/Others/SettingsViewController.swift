@@ -57,6 +57,26 @@ private extension SettingsViewController{
     }
     
     func signOutButtonTapped(){
+        let alert = UIAlertController(title: "Sign out", message: "Are You Sure", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        alert.addAction(UIAlertAction(title: "Sign Out", style: .destructive, handler: { _ in
+            
+            AuthManager.shared.signOut { [weak self]isSignedOut in
+                if isSignedOut{
+                    DispatchQueue.main.async {
+                        let navVC = UINavigationController(rootViewController: WelcomeViewController())
+                        navVC.navigationBar.prefersLargeTitles = true
+                        navVC.viewControllers.first?.navigationItem.largeTitleDisplayMode = .always
+                        navVC.modalPresentationStyle = .fullScreen
+                        self?.present(navVC, animated: true, completion: {
+                            self?.navigationController?.popToRootViewController(animated: false)
+                        })
+                    }
+                }
+            }
+            
+        }))
+        present(alert, animated: true)
         
     }
     
