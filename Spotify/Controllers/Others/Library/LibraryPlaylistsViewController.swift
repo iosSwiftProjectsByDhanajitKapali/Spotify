@@ -118,9 +118,11 @@ extension LibraryPlaylistsViewController {
             //Make API call to create the PlayList
             APICaller.shared.createPlaylist(with: text) {[weak self] sucess in
                 if sucess{
+                    HapticsManager.shared.vibrate(for: .success)
                     //Refresh the List of PlayList
                     self?.fetchUserCreatedPlaylists()
                 }else{
+                    HapticsManager.shared.vibrate(for: .error)
                     print("Failed to create playlist")
                 }
             }
@@ -167,8 +169,9 @@ extension LibraryPlaylistsViewController : UITableViewDelegate, UITableViewDataS
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let playlist = playlists[indexPath.row]
+        HapticsManager.shared.vibrateForSelection()
         
+        let playlist = playlists[indexPath.row]
         //To check is the touch was a LongPress or a Simple tap
         guard selectionHandler == nil else{
             selectionHandler?(playlist)

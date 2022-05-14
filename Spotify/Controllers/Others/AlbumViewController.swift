@@ -121,7 +121,10 @@ private extension AlbumViewController{
                 album: strongSelf.album) { sucess in
                     print("Saved:\(sucess)")
                     if sucess{
+                        HapticsManager.shared.vibrate(for: .success)
                         NotificationCenter.default.post(name: .albumSavedNotification, object: nil)
+                    }else{
+                        HapticsManager.shared.vibrate(for: .error)
                     }
                 }
             
