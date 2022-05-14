@@ -181,7 +181,7 @@ final class APICaller{
                 do {
                     let result = try JSONDecoder().decode(LibraryAlbumsResponse.self, from: data)
                     //print(result)
-                    completion(.success(result.items))
+                    completion(.success(result.items.compactMap({ $0.album })))
                     
 //                    let result = try JSONSerialization.jsonObject(with: data, options: .allowFragments)
 //                    print(result)
@@ -189,6 +189,32 @@ final class APICaller{
                     print(error)
                     completion(.failure(error))
                 }
+
+            }
+            task.resume()
+        }
+    }
+    
+    
+    ///Save an Album, in to User's Favourite Albums
+    public func saveAlbumToLibrary(album : Album, completion : @escaping(Bool) -> Void){
+        createRequest(
+            with: URL(string: Constants.URLs.baseApiUrl + "/me/albums?ids=\(album.id)" ),
+            type: .PUT
+        )
+        { baseRequest in
+            var request = baseRequest
+            request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+            
+            let task = URLSession.shared.dataTask(with: request) { _, response , error in
+                guard let code = (response as? HTTPURLResponse)?.statusCode,
+                      error == nil else {
+                    print("No data")
+                    completion(false)
+                    return
+                }
+                
+                completion(code == 200)
 
             }
             task.resume()
@@ -480,6 +506,7 @@ final class APICaller{
         case GET
         case POST
         case DELETE
+        case PUT
     }
     private func createRequest(with url : URL? , type: HTTPMethod, completion: @escaping(URLRequest) -> Void){
         AuthManager.shared.withValidToken { token in

@@ -72,6 +72,23 @@ class AlbumViewController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         
+        fetchAlbums()
+        
+        //Share button
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(didTapSave))
+        
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        collectionView.frame = view.bounds
+    }
+}
+
+// MARK: - Private Methods
+private extension AlbumViewController{
+    
+    func fetchAlbums(){
         APICaller.shared.getAlbumDetials(for: album) { [weak self] result in
             DispatchQueue.main.async {
                 switch result{
@@ -92,29 +109,22 @@ class AlbumViewController: UIViewController {
             
         }
         
-        
-        //Share button
-//        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(didTapShare))
-        
     }
     
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-        collectionView.frame = view.bounds
+    @objc func didTapSave(){
+        let actionSheet = UIAlertController(title: album.name, message: "Would you like to save this album", preferredStyle: .actionSheet)
+        actionSheet.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        actionSheet.addAction(UIAlertAction(title: "Save Album", style: .default, handler: { [weak self] _ in
+            guard let strongSelf = self else {return}
+            //Make API call to save the playlist
+            APICaller.shared.saveAlbumToLibrary(
+                album: strongSelf.album) { sucess in
+                    print("Saved:\(sucess)")
+                }
+            
+        }))
+        present(actionSheet, animated: true)
     }
-}
-
-// MARK: - Private Methods
-private extension AlbumViewController{
-    
-//    @objc func didTapShare(){
-//        guard let url = URL(string: playlist.external_urls["spotify"] ?? "" ) else{
-//            return
-//        }
-//        let vc =  UIActivityViewController(activityItems: [url], applicationActivities: [])
-//        vc.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
-//        present(vc, animated: true)
-//    }
 }
 
 
