@@ -120,6 +120,9 @@ private extension AlbumViewController{
             APICaller.shared.saveAlbumToLibrary(
                 album: strongSelf.album) { sucess in
                     print("Saved:\(sucess)")
+                    if sucess{
+                        NotificationCenter.default.post(name: .albumSavedNotification, object: nil)
+                    }
                 }
             
         }))

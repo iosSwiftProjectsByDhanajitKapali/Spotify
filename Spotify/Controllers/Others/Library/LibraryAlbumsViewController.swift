@@ -22,6 +22,8 @@ class LibraryAlbumsViewController: UIViewController {
         return tableView
     }()
 
+    private var observer : NSObjectProtocol?
+    
 }
 
 
@@ -36,6 +38,14 @@ extension LibraryAlbumsViewController{
         
         setUpNoAlbumsView()
         fetchUserSavedAlbums()
+        
+        observer = NotificationCenter.default.addObserver(
+            forName: .albumSavedNotification,
+            object: nil,
+            queue: .main,
+            using: { [weak self]_ in
+                self?.fetchUserSavedAlbums()
+            })
         
         //Add a close button (when this VC is opened through a LongPress)
 //        if selectionHandler != nil{
@@ -61,6 +71,7 @@ private extension LibraryAlbumsViewController{
     }
     
     func fetchUserSavedAlbums(){
+        albums.removeAll()
         APICaller.shared.getCurrentUserAlbums { [weak self] result in
             DispatchQueue.main.async {
                 switch result {
