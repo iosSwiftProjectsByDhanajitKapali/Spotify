@@ -13,15 +13,16 @@ Features :-
 
 ## ScreenRecording
 
-
-
-
 https://user-images.githubusercontent.com/37000235/177018705-aff6c630-0a4c-4b63-825b-d203bb304f45.mp4
 
 
-
-
 ## Screenshots
+
+
+![spotifyPresentation](https://user-images.githubusercontent.com/37000235/178900633-1b607d31-7454-4ec4-9b3a-f31a54cae507.png)
+
+<!---
+
 <table>
         <tr>
           <td><img src = "https://github.com/dhanajitkapali/myDigitalAssets/blob/master/ProjectScreenshots/SpotifyClone_iOS_Swift/spotify9.PNG" height="790" width="400" ></td>
@@ -52,7 +53,7 @@ https://user-images.githubusercontent.com/37000235/177018705-aff6c630-0a4c-4b63-
         </tr>
 </table>    
 
-
+-->
 
 
 
